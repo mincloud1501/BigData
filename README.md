@@ -1,6 +1,9 @@
 # BigData miniProject
 
-BigData Pipeline
+**BigData Pipeline**
+
+[BigData Pipeline]
+![pipeline](images/pipeline.jpg)
 
 ## [Data 수집]
 - Logstash, Beats (Packet/Top/File beats)
