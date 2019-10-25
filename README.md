@@ -2,6 +2,8 @@
 
 **BigData Pipeline**
 
+- [Data 수집] ▶ [Data 직렬화] ▶ [Data 저장] ▶ [Data 처리] ▶ [Data 분석] ▶ [Data 시각화] ▶ [Data 관리]
+
 [BigData Pipeline]
 ![pipeline](images/pipeline.jpg)
 
@@ -36,22 +38,40 @@
 
 ## [Data 직렬화]
 
-#### 파케이(Parquet)
+#### Apache Parquet [![parquet](https://img.shields.io/badge/Apache-Parquet-orange)](https://parquet.apache.org/)&nbsp;
+
+- Apache Parquet는 데이터 처리 프레임 워크, 데이터 모델 또는 프로그래밍 언어의 선택에 관계없이 Hadoop 에코 시스템의 모든 프로젝트에서 사용할 수 있는 컬럼 스토리지 형식
 
 ```js
 - Hadoop HDFS에서 주로 사용하는 파일 포맷
-- 중첩된 데이터를 효율적으로 저장할 수 있는 컬럼 기준 저장 포맷
-- 컬럼 기준 포맷은 파일 크기와 쿼리 성능 측면에 모두 효율성이 높음
-- 자바 구현체는 단일 표현에 얽매이지 않기 때문에 파케이 파일에서 데이터를 읽고 쓰는데 에이브로, 쓰리프트, 프로토콜 버퍼의 인메모리 데이터 모델을 사용할 수 있음
+- 중첩된 데이터를 효율적으로 저장할 수 있는 컬럼 기준 저장 포맷 <- 압축률이 더 좋다.
+- 컬럼 기준 포맷은 파일 크기와 쿼리 성능 측면에 모두 효율성이 높음 <- I/O 사용률이 줄어든다.
+- 자바 구현체는 단일 표현에 얽매이지 않기 때문에 Parquet 파일에서 데이터를 읽고 쓰는데 Avro, Thrift, Protocol Buffer의 In-memory 데이터 모델을 사용할 수 있음
 ```
 
-### Apache Thrift
+#### Apache Thrift [![thrift](https://img.shields.io/badge/Apache-Thrift-orange)](https://thrift.apache.org/)&nbsp;
 
-```
-- 서로 다른 언어로 개발된 모듈들의 통합을 지원하는 RPC Framework
+- 확장 가능한 언어 간 서비스 개발을 위한 Apache Thrift 소프트웨어 프레임 워크는 소프트웨어 스택과 코드 생성 엔진을 결합 (C ++, Java, Python, PHP, Ruby, Erlang, Perl, Haskell, C #, Cocoa, JavaScript, Node.js, Smalltalk, OCaml 및 Delphi 및 기타 언어)
+
+```js
+- Facebook에서 개발한 서로 다른 언어로 개발된 모듈들의 통합을 지원하는 RPC Framework
 ```
 
-### ☞ 에이브로(Avro)
+### ☞ Google Protocol Buffer [![gpb](https://img.shields.io/badge/Google-Protocol_Buffer-orange)](https://developers.google.com/protocol-buffers)&nbsp;
+
+- 프로토콜 버퍼는 구조화된 데이터를 직렬화하기 위한 Google의 언어, 플랫폼 중립적이며 확장 가능한 메커니즘으로 XML은 작지만 더 빠르고 단순함
+
+```js
+- 구글에서 개발 오픈한 Serialized Data Structure
+- C++,C#, Go, Java, Python, Object C, Javascript, Ruby 등 다양한 언어를 지원하며, 직렬화 속도가 빠르고 직렬화된 파일의 크기도 작아서 Apache Avro 파일 포맷과 함께 많이 사용됨
+- GRPC Network Protocol의 경우 HTTP 2.0 을 기반으로 하여 직렬화
+- 하나의 파일에 최대 64M 까지 지원 가능하며, JSON 파일을 프로토콜 버퍼 파일 포맷으로 전환이 가능하고, 반대로 프로토콜 버퍼 파일도 JSON으로 전환이 가능
+```
+
+### ☞ Apache Avro [![avro](https://img.shields.io/badge/Apache-Avro-orange)](http://avro.apache.org/docs/current/)&nbsp;
+
+- Avro는 언어 독립적인 직렬화 라이브러리로 핵심 구성 요소 중 하나인 스키마를 사용. 추가 데이터 처리를 위해 스키마를 파일에 저장함
+
 ```js
 - 특정 언어에 종속되지 않은 언어 중립적 데이터 직렬화 시스템
 - 하둡 Writable(직렬화 방식)의 주요 단점인 언어 이식성(language portablility)을 해결하기 위해 만든 프로젝트
@@ -81,9 +101,25 @@
   4. 검색에 용이한 인덱스 포맷. 역색인 구조 ( 검색 엔진에서 사용하고 있는 )
 ```
 
-### ※ 분산 컬럼 지향 DB에서 TSDB 및 OLAP DB로 전환 및 통합 추세
+### ※ 분산/컬럼 지향 DB에서 TSDB 및 OLAP DB로 전환 및 통합 추세
 
-### Time Series DB
+### ☞ Time Series Database (TSD)
+
+#### InfluxDB [![influxdb](https://img.shields.io/badge/TSD-InfluxDB-brightgreen)](https://www.influxdata.com/)&nbsp;
+
+```js
+- 2013 년 InfluxData에 의해 구축, 대부분 Grafana와 함께 사용
+- No Schema, NoSQL 특징을 기반으로 하며 빠른 데이터베이스 스키마 수정이 가능
+- InfluxDB와 직접 바인딩하는 데이터 처리 엔진 및 많은 수의 실시간 Metric을 수집할 수 있는 50 개 이상의 Agent Set를 제공
+```
+
+#### OpenTSDB [![opentsdb](https://img.shields.io/badge/TSD-OpenTSDB-brightgreen)](https://www.opentsdb.net)&nbsp;
+
+```js
+- 시계열 데이터를 매우 큰 규모로 저장해야 하는 필요성을 해결
+- Apache HBase에 구축 된 스키마 없는 데이터베이스
+- 분산 TSD 서버 인스턴스에 수억 개의 데이터 행 저장 가능
+```
 
 ### ☞ Apache Druid (incubating project) [![druid](https://img.shields.io/badge/Apache-Druid-blue)](https://druid.apache.org/)&nbsp;
 - A Scalable Timeseries Online Analytical Processing(OLAP) Database System
@@ -128,10 +164,10 @@
 
 ## [Data 처리]
 
-- Hadoop MapReduce (분산데이터 병렬배치 처리)
+#### Hadoop MapReduce (분산데이터 병렬배치 처리)
 
 ```js
-- Hadoop은 데이터 일괄처리를 최선으로 하며, 페타바이트급의 데이터를 저렴한 비용으로 저장/처리할 수 있으나, 실시간 데이터 처리에 부족
+- Hadoop은 데이터 일괄처리를 최우선으로 하며, 페타바이트급의 데이터를 저렴한 비용으로 저장/처리할 수 있으나, 실시간 데이터 처리에 부족
 ```
 
 **[Data Warehouse]**
@@ -139,7 +175,16 @@
 - Hive : Hadoop에서 동작하는 data warehouse infra architecture, SQL을 MapReduce로 변환
 - Tajo : Hadoop 기반의 대용량 data warehouse
 
-### ☞ Apache Spark
+### ☞ Apache Spark™ [![spark](https://img.shields.io/badge/Apache-Spark-yellow)](https://spark.apache.org/)&nbsp;
+- 대규모 데이터 처리 및 라이브러리 세트 (Spark SQL/MLlib/GraphX)를 위한 통합 분석 엔진
+
+[Apache Spark]
+
+![apache_spark](images/apache_spark.png)
+
+[Apache Spark Architecture]
+
+![apache_spark](images/spark_architecture.png)
 
 ```js
 - In-Memory 방식 오픈 소스 클러스터 컴퓨팅 프레임워크, 실시간 데이터 처리에 적합
@@ -158,30 +203,41 @@
 
 ## [Data 분석]
 
-#### Impala, Presto
+#### Apache Impala [![impala](https://img.shields.io/badge/Apache-Impala-yellowgreen)](https://impala.apache.org)&nbsp;
+- Apache Impala는 Apache Hadoop을 실행하는 컴퓨터 클러스터에 저장된 데이터를위한 오픈 소스 MPP (대규모 병렬 처리) SQL 쿼리 엔진 
 
-```js
-- Impala : Apache Hadoop을 실행하는 Cluster에 저장된 데이터를 위한 오픈 소스 대규모 병렬 처리 SQL Query Engine
-- Presto : Facebook이 개발한 분산 SQL Query Engine, 기존 분석도구인 하이브/맵리듀스에 비해 CPU 효율성과 대기 시간이 10배 빠르다고 발표
-```
+#### Presto [![presto](https://img.shields.io/badge/Apache-Presto-yellowgreen)](http://prestodb.github.io)&nbsp;
+- Presto는 기가 바이트에서 페타 바이트에 이르는 모든 크기의 데이터 소스에 대해 대화 형 분석 쿼리를 실행하기위한 오픈 소스 분산 SQL 쿼리 엔진
 
-### ☞ Apache Lucene
+### ☞ Apache Lucene [![lucene](https://img.shields.io/badge/Apache-Lucene-yellowgreen)](https://lucene.apache.org)&nbsp;
+- Apache Lucene은 무료 오픈 소스 검색 엔진 소프트웨어 라이브러리로 Doug Cutting이 Java로 작성
+
+[Apache Lucene Architecture]
+
+![apache_lucene](images/lucene_architecture.png)
 
 ```js
 - 색인과 검색 기능 제공, 자바 기반 검색 Library
+- Lucene Core : 맞춤법 검사, 적중 강조 표시 및 고급 분석/토큰화 기능뿐만 아니라 Java 기반 색인 및 검색 기술을 제공
+- Solr는 XML/HTTP 및 JSON/Python/Ruby API와 함께 Lucene Core를 사용하여 구축된 고성능 검색 서버로, hit highlighting, faceted search, caching, 복제 및 웹 관리 Interface
+- PyLucene은 Core Project를 중심으로 한 Python Wrapper
 ```
 
-### ☞ Elasticsearch 
+### ☞ Elasticsearch [![elasticsearch](https://img.shields.io/badge/Elasticsearch-v7.4-yellowgreen)](https://www.elastic.co/kr/)&nbsp;
+
+[Elasticsearch Context View]
+
+![elasticsearch](images/elasticsearch.png)
 
 ```js
-- Lucene기반, 사이즈가 작은 데이터에 대한 속성검색/연관검색/실시간 검색에 용이함 (주요 커머스검색용)
+- Lucene기반, 사이즈가 작은 데이터에 대한 속성검색/연관검색/실시간 검색에 용이함 (주요 커머스검색 용)
 - 자체 Master Node에서 관리, 강력한 API (RESTful 검색 및 분석 엔진)
 ```
 
 **Apache Solr(솔라)**
 
 ```js
-- Lucene기반, 사이즈가 큰 데이터 검색에 용이에 문서 검색에 적합하나 색인주기가 느림 (주로 문서검색용)
+- Lucene기반, 사이즈가 큰 데이터 검색에 용이에 문서 검색에 적합하나 색인주기가 느림 (주로 문서검색 용)
 - Apache ZooKeeper로 관리
 ```
 
@@ -196,28 +252,30 @@
 
 ## [Data 시각화]
 
-#### Apache Zeppelin
+#### Apache Zeppelin [![zepplin](https://img.shields.io/badge/Apache-Zeppelin-ff69b4)](https://zeppelin.apache.org)&nbsp;
 
-```
+```js
 - 국내에서 주도하고 있는 오픈소스 프로젝트로써, Spark를 훨씬 더 편하고 강력하게 사용할 수 있게 해주는 도구
 - 분석 코드 작성, 작업 스케쥴링, 데이터 시각화, 대시보드
 - 여러 시스템에 대한 실행 결과를 얻기 위한 Interpreter들을 통해 Query 결과를 수집/시각화
 ```
 
-### ☞ Kibana
+### ☞ Kibana [![kibana](https://img.shields.io/badge/ELK-Kibana-ff69b4)](https://www.elastic.co/kr/products/kibana)&nbsp;
+- Kibana는 로그 및 시계열 분석, 응용 프로그램 모니터링 및 운영 인텔리전스 사용 사례에 사용되는 오픈 소스 데이터 시각화 및 탐색 도구
 
-```
+```js
 - 로그 데이터 탐색에 사용되는 ELK Stack의 일부
 - Elasticsearch 클러스터에 저장된 로그 데이터를 기반으로 대시 보드를 탐색, 시각화 및 구축 할 수있는 도구
 - 주로 로그 메시지를 분석하는 데 사용
 - YAML 구성 파일
-- Elasticsearch에서만 작동하도록 설계되었으므로 다른 유형의 데이터 소스를 지원 안함
-- 즉시 사용 가능한 경고 기능이 제공되지 않으며, noti를 추가하려면 Logz.io와 같은 호스팅 된 ELK 스택을 선택하거나 ElastAlert를 구현하거나 X-Pack을 사용해야 함
+- Elasticsearch에서만 작동하도록 설계되어 다른 유형의 데이터 소스를 지원 안함
+- 즉시 사용 가능한 경고 기능이 제공되지 않으며, noti를 추가하려면 Logz.io와 같은 호스팅된 ELK 스택을 선택하거나 ElastAlert를 구현하거나 X-Pack을 사용해야 함
 ```
 
-### ☞ Grafana
+### ☞ Grafana [![grafana](https://img.shields.io/badge/OpenSource-Grafana-ff69b4)](https://grafana.com)&nbsp;
+- Grafana는 모든 데이터베이스를위한 오픈 소스 분석 및 모니터링 솔루션
 
-```
+```js
 - Graphite 또는 InfluxDB와 같은 시계열 데이터베이스와 함께 메트릭 분석에 사용되는 조합
 - Graphite, InfluxDB 및 Elasticsearch 및 Logz.io와 함께 가장 많이 사용되는 오픈 소스 시각화 도구
 - 시스템 CPU, 메모리, 디스크 및 I / O 사용률과 같은 메트릭을 분석하고 시각화하도록 설계
@@ -229,15 +287,69 @@
 - 버전 4.x부터 사용자가 선택한 알림 엔드 포인트(예: 이메일,Slack,PagerDuty,사용자정의 웹 후크)에 대해 경고를 트리거하는 조건부 규칙을 대시 보드 패널에 첨부 가능한 내장 경고 엔진을 제공
 ```
 
+[Kibana vs. Grafana]
+
+![google_trend](images/kabana_vs_grafana.png)
+
 ---
 
 ## [Data 관리]
 
-### ☞ Airflow
+#### Apache Oozie [![oozie](https://img.shields.io/badge/Apache-Oozie-blueviolet)](https://oozie.apache.org)&nbsp;
+- Hadoop의 Job을 관리하기 위한 서버 기반의 Workflow Scheduler System
+
+#### Azkaban [![azkaban](https://img.shields.io/badge/LinkedIn-Azkaban-blueviolet)](https://azkaban.github.io)&nbsp;
+- Azkaban은 Hadoop job을 실행하기 위해 LinkedIn에서 만든 Batch Workflow Job Scheduler
+
+#### Apache Ambari [![ambari](https://img.shields.io/badge/Apache-Ambari-blueviolet)](https://ambari.apache.org)&nbsp;
+- 시스템 관리자가 Hadoop 클러스터를 프로비저닝, 관리 및 모니터링하고 Hadoop을 기존 엔터프라이즈 인프라와 통합 할 수 있게 해 줌
+
+[Ambari Screenshot]
+
+![ambari](images/ambari.png)
 
 ```
-Oozie -> Luigi -> Airflow, Workflow Tool로 Job 스케쥴링, 의존성에 따른 Task 관리
+- RESTful API가 지원하는 직관적이고 사용하기 쉬운 Hadoop 관리 웹 UI를 제공
+- 여러 호스트에 Hadoop 서비스를 설치하기 위한 단계별 마법사를 제공
+- 클러스터에 대한 Hadoop 서비스 구성을 처리
+- 전체 클러스터에서 Hadoop 서비스를 시작, 중지 및 재구성하기위한 중앙 관리를 제공
+- Hadoop 클러스터의 상태 및 상태를 모니터링하기위한 대시 보드를 제공
 ```
 
-- `NiFi` : Process와 Process간 Data Flow Monitoring Tool
-- `Ambari` : Cluster상 설치된 여러 솔루션들의 설정 값들을 관리, 각 요소들의 중지/시작을 Web Interface로 처리 가능
+### ☞ Apache Airflow [![airflow](https://img.shields.io/badge/Apache-Airflow-blueviolet)](https://airflow.apache.org)&nbsp;
+- Airflow는 프로그래밍 방식으로 Workflow를 작성, 예약 및 모니터링 할 수 있는 Platform
+
+[Airflow Screenshot]
+
+![airflow](images/airflow.png)
+
+```
+- Apache Airflow는 배치 스케쥴링(파이프라인) 플랫폼
+- Python 기반으로 실행할 Task(Operator)를 정의하고 순서에 등록 & 실행 & 모니터링
+- DAG(Directed Acyclic Graph, 비순환 방향 그래프)로 각 배치 스케쥴 관리
+```
+
+#### Apache NiFi [![nifi](https://img.shields.io/badge/Apache-NiFi-blueviolet)](https://nifi.apache.org)&nbsp;
+- Process와 Process간 Data Flow Monitoring Tool
+
+``` 
+- Dataflow를 쉽게 개발할 수 있고, 시스템 간의 데이터 이동과 내용을 볼 수 있는 기능과 UI를 제공, 데이터의 input/output을 볼 수 있음
+```
+
+---
+
+## [Data 통합 서비스/솔루션]
+
+### ☞ Amazon Elasticsearch Service [![aws](https://img.shields.io/badge/AWS-Elasticsearch-lightgrey)](https://aws.amazon.com/ko/elasticsearch-service)&nbsp;
+
+```
+- 손쉽게 Elasticsearch를 배포, 보호, 운영 및 확장이 가능한 가동 중단이 없는 완전 관리형 서비스
+- 사용하는 만큼만 비용을 지불하며 사전 비용이나 사용 요건이 없음
+```
+
+### ☞ Splunk [![splunk](https://img.shields.io/badge/Solution-Splunk-lightgrey)](https://www.splunk.com/ko_kr)&nbsp;
+- 로그 데이터, 실시간 이벤트 데이터 및 다양한 장비 데이터를 수집하고 모니터링하며 검색, 분류, 분석할 수 있는 엔진을 제공하는 통합 솔루션
+
+[Splunk Architecture]
+
+![splunk_architecture](images/splunk_architecture.png)
