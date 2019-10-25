@@ -15,7 +15,7 @@
 
 ![kafka](images/apache_kafka.png)
 
-```
+```js
 - Queuing (SQS, celery...) : Queue Consumers는 작업자 그룹의 역할을 수행, 각 메시지는 작업자 프로세스 중 하나에 만 전달되어 작업을 효과적으로 분할
 - Publish-Subscribe (SNS, PubNub...) : subscriber는 일반적으로 서로 독립적이며, 각 subscriber는 각 메시지의 사본을 받고 notification system 처럼 작동
 - Stream API : Kafka Cluster와 통신하는 Java Client Library (현재 Scala), 메시지의 직렬화/역직렬화를 처리하고 상태 저장 작업에 필요한 상태를 유지
@@ -23,20 +23,22 @@
 
 - Apachae Camus : 카프카에서 hdfs로 데이터를 배치로 옮겨주는 역할
 
-####<설계/고려사항>
+#### <설계/고려사항>
 - Kafka는 실제로 대규모 Stream을 처리하도록 설계되어 규모가 없거나 예상하지 못한 경우, 설정하고 유지/관리하는 것은 가치가 없음
 
-```
+```js
 - 장애 발생 시 데이터 처리 보장
 - 누락 데이터 확인을 위한 메타정보 추가
 - 데이터 복구 방안
 ```
 
+---
+
 ## [Data 직렬화]
 
 #### 파케이(Parquet)
 
-```
+```js
 - Hadoop HDFS에서 주로 사용하는 파일 포맷
 - 중첩된 데이터를 효율적으로 저장할 수 있는 컬럼 기준 저장 포맷
 - 컬럼 기준 포맷은 파일 크기와 쿼리 성능 측면에 모두 효율성이 높음
@@ -50,7 +52,7 @@
 ```
 
 ### ☞ 에이브로(Avro)
-```
+```js
 - 특정 언어에 종속되지 않은 언어 중립적 데이터 직렬화 시스템
 - 하둡 Writable(직렬화 방식)의 주요 단점인 언어 이식성(language portablility)을 해결하기 위해 만든 프로젝트
 - 스키마는 JSON으로 작성
@@ -67,7 +69,7 @@
 ### ☞ ElasticSearch Cluster
 - 전체 데이터를 저장하고 모든 노드를 포괄하는 통합 색인화 및 NRT(Near Realtime) 검색 기능을 제공
 
-```
+```js
 - Cluster + Master-eligible/Data/Ingest/Tribe Node로 구성
 - 대용량 데이터 모두 저장을 위해서는 Storage 뿐만 아니라, Index를 유지를 위해 많은 메모리가 요구되어 좋은 성능의 Node들이 필요 -> 많은 비용 발생
 - 데이터 유실 발생 가능 -> 많은 운용 능력 요구됨
@@ -90,7 +92,7 @@
 
 ![druid](images/druid_architecture.png)
 
-```
+```js
 - Real-time/Historical/Broker/Coordinator/Deep/MySQL/Zookeeper Node로 구성
 
 - 대용량 데이터에 대한 실시간 집계 (Real Time Aggregations) <- 대용량 Spark Cluster 필요
@@ -108,14 +110,14 @@
 
 ![cloud_storage](images/cloud_storage.png)
 
-```
+```js
 - 분석할 데이터를 수집 후, Cloud Storage 서비스에서 직접 Hive 또는 Spark와 같은 Hadoop Echo System Application에 Load
 - 클러스터 외부에서 사용할 수 있도록 데이터를 클라우드 스토리지 서비스에 유지
 - 클라우드 스토리지 서비스에 저장된 데이터를 분석을 위해 HDFS로 복사한 다음 완료되면 클라우드로 다시 복사
 ```
 
-####<설계/고려사항>
-```
+#### <설계/고려사항>
+```js
 - 데이터 사용에 대한 고가용성 보장
 - 압축 파일 포맷에 대한 고민
 - 장애에 대한 영향도 전파가 없도록 구성
@@ -128,7 +130,7 @@
 
 - Hadoop MapReduce (분산데이터 병렬배치 처리)
 
-```
+```js
 - Hadoop은 데이터 일괄처리를 최선으로 하며, 페타바이트급의 데이터를 저렴한 비용으로 저장/처리할 수 있으나, 실시간 데이터 처리에 부족
 ```
 
@@ -138,16 +140,17 @@
 - Tajo : Hadoop 기반의 대용량 data warehouse
 
 ### ☞ Apache Spark
-```
+
+```js
 - In-Memory 방식 오픈 소스 클러스터 컴퓨팅 프레임워크, 실시간 데이터 처리에 적합
 - 메모리를 활용한 아주 빠른 데이터 처리, Scala를 사용하여 코드가 매우 간단, interactive shell을 사용
 - Spark는 실시간 처리를 위한 독립적인 처리엔진으로 Hadoop과 같은 모든 분산 파일 시스템에 설치 가능
 - Spark는 스트리밍 데이터로의 전환을 편리하게 할 수 있다는 장점
 ```
 
-####<설계/고려사항>
+#### <설계/고려사항>
 
-```
+```js
 - 데이터 처리 후 정합성 체크를 위한 원본 데이터 보관
 ```
 
@@ -157,33 +160,34 @@
 
 #### Impala, Presto
 
-```
+```js
 - Impala : Apache Hadoop을 실행하는 Cluster에 저장된 데이터를 위한 오픈 소스 대규모 병렬 처리 SQL Query Engine
 - Presto : Facebook이 개발한 분산 SQL Query Engine, 기존 분석도구인 하이브/맵리듀스에 비해 CPU 효율성과 대기 시간이 10배 빠르다고 발표
 ```
 
 ### ☞ Apache Lucene
-```
+
+```js
 - 색인과 검색 기능 제공, 자바 기반 검색 Library
 ```
 
 ### ☞ Elasticsearch 
 
-```
+```js
 - Lucene기반, 사이즈가 작은 데이터에 대한 속성검색/연관검색/실시간 검색에 용이함 (주요 커머스검색용)
 - 자체 Master Node에서 관리, 강력한 API (RESTful 검색 및 분석 엔진)
 ```
 
 **Apache Solr(솔라)**
 
-```
+```js
 - Lucene기반, 사이즈가 큰 데이터 검색에 용이에 문서 검색에 적합하나 색인주기가 느림 (주로 문서검색용)
 - Apache ZooKeeper로 관리
 ```
 
 **Scruid (Scala+Druid)**
 
-```
+```js
 - Scala에서 Druid Query를 쉽게 작성할 수있는 Open Source Library
 - Library는 Query를 JSON으로 변환하고 사용자가 정의한 Case Class의 결과를 구문 분석
 ```
