@@ -53,24 +53,12 @@
 
 ## [Data 저장]
 
-#### Hadoop HDFS (NameNode + DataNode)
-#### Apache HBASE (HDFS 컬럼 기반 DB), Apache Kudu (컬럼 지향 데이터 스토어)
-
-### ☞ Apache Druid
-```
-- 리얼타임 데이터 분석용 데이터 스토어
-- Real-time/Historical/Broker/Coordinator/Deep/MySQL/`Zookeeper` Node로 구성
-
-- 대용량 데이터에 대한 실시간 집계 (Real Time Aggregations) <- 대용량 Spark Cluster 필요
-- 페타 바이트 크기의 데이터 세트에 대한 빠른 집계 쿼리를위한 데이터웨어 하우징 솔루션
-- Druid는 대기 시간이 매우 짧은 쿼리에 중점을두고 있으며 수천 명의 사용자가 사용하는 응용 프로그램에 적합
-- 리얼 타임이어야 하고, 멀티 테넌시 하며, 컬럼 지향, 쿼리 속도 보장을 위해 만들어 짐
-- lambda-architecture : 실시간으로 들어오는 데이터(실시간 뷰)와 이전 데이터(배치 뷰)를 합해 쿼리 결과를 보여준다
-- OLAP (Online Analytical Processing)을 위해 디자인 됨
-- Druid는 모든 데이터를 완전히 색인화 함 (Full Indexing)
-```
+- Apache Hadoop HDFS (NameNode + DataNode)
+- Apache HBASE (HDFS 컬럼 기반 DB), Apache Kudu (컬럼 지향 데이터 스토어)
 
 ### ☞ ElasticSearch Cluster
+- 전체 데이터를 저장하고 모든 노드를 포괄하는 통합 색인화 및 NRT(Near Realtime) 검색 기능을 제공
+
 ```
 - Cluster + Master-eligible/Data/Ingest/Tribe Node로 구성
 - 대용량 데이터 모두 저장을 위해서는 Storage 뿐만 아니라, Index를 유지를 위해 많은 메모리가 요구되어 좋은 성능의 Node들이 필요 -> 많은 비용 발생
@@ -80,10 +68,32 @@
   1. 컬럼 지향 ( column - stride )
   2. 분산 데이터 스토어
   3. 비공유 모델 ( shared-nothing )
-  4. 검색에 용이한 인덱스 포맷. 역색인 구조 ( 검색엔진에서 사용하고 있는 )
+  4. 검색에 용이한 인덱스 포맷. 역색인 구조 ( 검색 엔진에서 사용하고 있는 )
 ```
 
-### ☞ AWS S3, Google Cloud Storage
+### ※ 분산 컬럼 지향 DB에서 TSDB 및 OLAP DB로 전환 및 통합 추세###
+
+[![druid](https://img.shields.io/badge/Apache-Druid-blue)](https://druid.apache.org/)&nbsp;
+
+### ☞ Apache Druid (incubating project)
+- A Scalable Timeseries Online Analytical Processing(OLAP) Database System
+
+[Druid Architecture]
+
+![druid](images/druid_architecture.png)
+
+```
+- Real-time/Historical/Broker/Coordinator/Deep/MySQL/Zookeeper Node로 구성
+
+- 대용량 데이터에 대한 실시간 집계 (Real Time Aggregations) <- 대용량 Spark Cluster 필요
+- 페타 바이트 크기의 데이터 세트에 대한 빠른 집계 쿼리를 위한 데이터웨어 하우징 솔루션
+- Druid는 대기 시간이 매우 짧은 쿼리에 중점을 두고 있으며, 수천 명의 사용자가 사용하는 응용 프로그램에 적합
+- Real-time, Multi-Tenancy, 컬럼 지향, 쿼리 속도 보장을 위해 만들어 짐
+- Lambda-Architecture : 실시간으로 들어오는 데이터(실시간 뷰)와 이전 데이터(배치 뷰)를 합해 쿼리 결과를 보여준다
+- Druid는 모든 데이터를 완전히 색인화 함 (Full Indexing)
+```
+
+### ☞ Amazon S3, Azure Blob Storage, Google Cloud Storage
 
 **`※설계/고려사항`**
 ```
@@ -97,7 +107,7 @@
 
 ## [Data 처리]
 
-#### Hadoop MapReduce (분산 데이터 병렬 배치 처리)
+- Hadoop MapReduce (분산 데이터 병렬 배치 처리)
 
 ```
 - Hadoop은 데이터 일괄처리를 최선으로 하며, 페타바이트급의 데이터를 저렴한 비용으로 저장/처리할 수 있으나, 실시간 데이터 처리에 부족
@@ -150,6 +160,13 @@
 ```
 - Lucene기반, 사이즈가 큰 데이터 검색에 용이에 문서 검색에 적합하나 색인주기가 느림 (주로 문서검색용)
 - Apache ZooKeeper로 관리
+```
+
+**Scruid (Scala+Druid)**
+
+```
+- Scala에서 Druid Query를 쉽게 작성할 수있는 Open Source Library
+- Library는 Query를 JSON으로 변환하고 사용자가 정의한 Case Class의 결과를 구문 분석
 ```
 
 ---
