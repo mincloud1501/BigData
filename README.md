@@ -9,15 +9,23 @@
 - Logstash, Beats (Packet/Top/File beats)
 - **Apache Flume**, Yahoo Chuckwa, Facebook Scribe, Apache Sqoop
 
-### ☞ Apache Kafka
+### ☞ Apache Kafka [![kafka](https://img.shields.io/badge/Apache-Kafka-blue)](https://kafka.apache.org/documentation/)&nbsp;
+
+[Kafka Architecture]
+
+![kafka](images/apache_kafka.png)
+
 ```
-- Distributed Queue Messaging System
+- Queuing (SQS, celery...) : Queue Consumers는 작업자 그룹의 역할을 수행, 각 메시지는 작업자 프로세스 중 하나에 만 전달되어 작업을 효과적으로 분할
+- Publish-Subscribe (SNS, PubNub...) : subscriber는 일반적으로 서로 독립적이며, 각 subscriber는 각 메시지의 사본을 받고 notification system 처럼 작동
+- Stream API : Kafka Cluster와 통신하는 Java Client Library (현재 Scala), 메시지의 직렬화/역직렬화를 처리하고 상태 저장 작업에 필요한 상태를 유지
 ```
 
 - Apachae Camus : 카프카에서 hdfs로 데이터를 배치로 옮겨주는 역할
 
+####<설계/고려사항>
+- Kafka는 실제로 대규모 Stream을 처리하도록 설계되어 규모가 없거나 예상하지 못한 경우, 설정하고 유지/관리하는 것은 가치가 없음
 
- **`※설계/고려사항`**
 ```
 - 장애 발생 시 데이터 처리 보장
 - 누락 데이터 확인을 위한 메타정보 추가
@@ -71,11 +79,11 @@
   4. 검색에 용이한 인덱스 포맷. 역색인 구조 ( 검색 엔진에서 사용하고 있는 )
 ```
 
-### ※ 분산 컬럼 지향 DB에서 TSDB 및 OLAP DB로 전환 및 통합 추세###
+### ※ 분산 컬럼 지향 DB에서 TSDB 및 OLAP DB로 전환 및 통합 추세
 
-[![druid](https://img.shields.io/badge/Apache-Druid-blue)](https://druid.apache.org/)&nbsp;
+### Time Series DB
 
-### ☞ Apache Druid (incubating project)
+### ☞ Apache Druid (incubating project) [![druid](https://img.shields.io/badge/Apache-Druid-blue)](https://druid.apache.org/)&nbsp;
 - A Scalable Timeseries Online Analytical Processing(OLAP) Database System
 
 [Druid Architecture]
@@ -93,9 +101,20 @@
 - Druid는 모든 데이터를 완전히 색인화 함 (Full Indexing)
 ```
 
-### ☞ Amazon S3, Azure Blob Storage, Google Cloud Storage
+### ☞ Amazon S3, Azure ADLS & WASB, Google Cloud GCS
+- Cloud Connector를 사용하여 Cloud Storage에 저장된 데이터에 액세스하고 작업 가능
 
-**`※설계/고려사항`**
+[Cloud Storage Architecture]
+
+![cloud_storage](images/cloud_storage.png)
+
+```
+- 분석할 데이터를 수집 후, Cloud Storage 서비스에서 직접 Hive 또는 Spark와 같은 Hadoop Echo System Application에 Load
+- 클러스터 외부에서 사용할 수 있도록 데이터를 클라우드 스토리지 서비스에 유지
+- 클라우드 스토리지 서비스에 저장된 데이터를 분석을 위해 HDFS로 복사한 다음 완료되면 클라우드로 다시 복사
+```
+
+####<설계/고려사항>
 ```
 - 데이터 사용에 대한 고가용성 보장
 - 압축 파일 포맷에 대한 고민
@@ -107,7 +126,7 @@
 
 ## [Data 처리]
 
-- Hadoop MapReduce (분산 데이터 병렬 배치 처리)
+- Hadoop MapReduce (분산데이터 병렬배치 처리)
 
 ```
 - Hadoop은 데이터 일괄처리를 최선으로 하며, 페타바이트급의 데이터를 저렴한 비용으로 저장/처리할 수 있으나, 실시간 데이터 처리에 부족
@@ -115,18 +134,18 @@
 
 **[Data Warehouse]**
 
-- Hive : Hadoop에서 동작하는 data warehouse infra architecture, SQL을 MapReduce로 변환, 페이스북에서 개발 넷플릭스 등과 같은 회사에서 사용
+- Hive : Hadoop에서 동작하는 data warehouse infra architecture, SQL을 MapReduce로 변환
 - Tajo : Hadoop 기반의 대용량 data warehouse
 
 ### ☞ Apache Spark
 ```
-- In-Memory 방식 오픈 소스 클러스터 컴퓨팅 프레임워크
+- In-Memory 방식 오픈 소스 클러스터 컴퓨팅 프레임워크, 실시간 데이터 처리에 적합
 - 메모리를 활용한 아주 빠른 데이터 처리, Scala를 사용하여 코드가 매우 간단, interactive shell을 사용
-- SPARK는 실시간 처리를 위한 독립적인 처리엔진으로 Hadoop과 같은 모든 분산 파일 시스템에 설치 가능
+- Spark는 실시간 처리를 위한 독립적인 처리엔진으로 Hadoop과 같은 모든 분산 파일 시스템에 설치 가능
 - Spark는 스트리밍 데이터로의 전환을 편리하게 할 수 있다는 장점
 ```
 
-**`※ 설계/고려사항`**
+####<설계/고려사항>
 
 ```
 - 데이터 처리 후 정합성 체크를 위한 원본 데이터 보관
