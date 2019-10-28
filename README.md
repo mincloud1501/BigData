@@ -40,16 +40,16 @@
 > bin/windows/kafka-server-start.bat config/server.properties
 
 # Topic 생성
-> bin/windows/kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic kafka_test
+> bin/windows/kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic kafka-test-topic
 
 # Topic List 확인
 > bin/windows/kafka-topics.bat --list --zookeeper localhost:2181
 
 # Consumer Run -> Get Message
-> bin/windows/kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic kafka_test
+> bin/windows/kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic kafka-test-topic
 
 # Producer Run -> Send Message
-> bin/windows/kafka-console-producer.bat --broker-list localhost:9092 --topic kafka_test
+> bin/windows/kafka-console-producer.bat --broker-list localhost:9092 --topic kafka-test-topic
 > test message#1
 > test message#2
 > test message#3
@@ -57,7 +57,13 @@
 
 - Run API : http://localhost:8080/get?message=kafka-test-message
 
+- Run Consumer/Producer
 
+```java
+# Run Zookeeper & Kafka
+# Run kafkaProducer
+# Run kafkaConsumer
+```
 
 #### <설계/고려사항>
 - Kafka는 실제로 대규모 Stream을 처리하도록 설계되어 규모가 없거나 예상하지 못한 경우, 설정하고 유지/관리하는 것은 가치가 없음
@@ -147,11 +153,29 @@
 - InfluxDB와 직접 바인딩하는 데이터 처리 엔진 및 많은 수의 실시간 Metric을 수집할 수 있는 50 개 이상의 Agent Set를 제공
 ```
 
-#### OpenTSDB [![opentsdb](https://img.shields.io/badge/TSD-OpenTSDB-brightgreen)](https://www.opentsdb.net)&nbsp;
+### ☞ OpenTSDB [![opentsdb](https://img.shields.io/badge/TSD-OpenTSDB-brightgreen)](https://www.opentsdb.net)&nbsp;
+
+- OpenTSDB는 Hbase 위에서 작성된 분산, 확장 가능한 TSD(Time Series Database)
+
+```js
+- 수집 대상인 server 또는 network 장비들에 설치된 collector 클라이언트가 TSD서버로 전송하면 TSD가 HBase에 저장
+- OpenTSDB는 HTTP API, Web UI, Telnet을 통한 읽기/쓰기를 지원
+```
+
+[Data Format]
+
+- Metric name
+- Unix timestamp(Epoch)
+- a Value(int64, float, JSON)
+- A set of tags
+
+[OpenTSDB Architecture]
+
+![OpenTSDB](images/opentsdb_architecture.png)
 
 ```js
 - 시계열 데이터를 매우 큰 규모로 저장해야 하는 필요성을 해결
-- Apache HBase에 구축 된 스키마 없는 데이터베이스
+- Apache HBase에 구축 된 스키마 없는 Column 기반인 NoSQL의 데이터베이스
 - 분산 TSD 서버 인스턴스에 수억 개의 데이터 행 저장 가능
 ```
 
