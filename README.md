@@ -11,19 +11,53 @@
 - Logstash, Beats (Packet/Top/File beats)
 - **Apache Flume**, Yahoo Chuckwa, Facebook Scribe, Apache Sqoop
 
-### ☞ Apache Kafka [![kafka](https://img.shields.io/badge/Apache-Kafka-blue)](https://kafka.apache.org/documentation/)&nbsp;
+### ☞ Apache Kafka [![kafka](https://img.shields.io/badge/Apache-Kafka-blue)](https://kafka.apache.org/documentation/)&nbsp;[![quickstart](https://img.shields.io/badge/Kafka-Quickstart-red)](https://kafka.apache.org/quickstart)&nbsp;
 
-[Kafka Architecture]
+[Kafka Architecture] [![Sources](https://img.shields.io/badge/출처-Kafka-yellow)](https://kafka.apache.org/intro)
 
 ![kafka](images/apache_kafka.png)
 
 ```js
-- Queuing (SQS, celery...) : Queue Consumers는 작업자 그룹의 역할을 수행, 각 메시지는 작업자 프로세스 중 하나에 만 전달되어 작업을 효과적으로 분할
-- Publish-Subscribe (SNS, PubNub...) : subscriber는 일반적으로 서로 독립적이며, 각 subscriber는 각 메시지의 사본을 받고 notification system 처럼 작동
-- Stream API : Kafka Cluster와 통신하는 Java Client Library (현재 Scala), 메시지의 직렬화/역직렬화를 처리하고 상태 저장 작업에 필요한 상태를 유지
+- Producer API : 한 개 이상의 topic에 stream을 publish할 수 있는 응용 프로그램을 제작
+- Consumer API : 한 개 이상의 topic을 subscribe하고 생성된 record stream을 처리
+- Streams  API : 한 개 이상의 topic에서 메시지의 직렬화/역직렬화를 처리하고 상태 저장 작업에 필요한 상태를 유지, Kafka Cluster와 통신하는 Java Client Library (현재 Scala)
+- Connector API: kafka에 기록된 data를 기존 응용 프로그램 또는 DB에 연결하는 재사용 가능한 Producer 또는 Consumer를 구축 및 실행
 ```
 
 - Apachae Camus : 카프카에서 hdfs로 데이터를 배치로 옮겨주는 역할
+
+### ★Run (On Windows)
+
+- Download : http://mirror.navercorp.com/apache/kafka/2.3.1/
+
+- Run Zookeeper/Kafka & Create Topic & Run Consumer/Producer
+
+```java
+# Zookeeper Run
+> bin/windows/zookeeper-server-start.bat config/zookeeper.properties
+
+# Kafka Run
+> bin/windows/kafka-server-start.bat config/server.properties
+
+# Topic 생성
+> bin/windows/kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic kafka_test
+
+# Topic List 확인
+> bin/windows/kafka-topics.bat --list --zookeeper localhost:2181
+
+# Consumer Run -> Get Message
+> bin/windows/kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic kafka_test
+
+# Producer Run -> Send Message
+> bin/windows/kafka-console-producer.bat --broker-list localhost:9092 --topic kafka_test
+> test message#1
+> test message#2
+> test message#3
+```
+
+- Run API : http://localhost:8080/get?message=kafka-test-message
+
+
 
 #### <설계/고려사항>
 - Kafka는 실제로 대규모 Stream을 처리하도록 설계되어 규모가 없거나 예상하지 못한 경우, 설정하고 유지/관리하는 것은 가치가 없음
