@@ -45,6 +45,9 @@
 # Topic List 확인
 > bin/windows/kafka-topics.bat --list --zookeeper localhost:2181
 
+# Topic 삭제 : /temp/zookeeper & kafka-logs로 관리
+> bin/windows/kafka-topics.bat --delete --zookeeper localhost --topic kafka-test-topic
+
 # Consumer Run -> Get Message
 > bin/windows/kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic kafka-test-topic
 
@@ -57,12 +60,10 @@
 
 - Run API : http://localhost:8080/get?message=kafka-test-message
 
-- Run Consumer/Producer
+- JUnit Test KafkaExampleApplicationTests
 
 ```java
 # Run Zookeeper & Kafka
-# Run kafkaProducer
-# Run kafkaConsumer
 ```
 
 #### <설계/고려사항>
@@ -110,7 +111,7 @@
 
 ### ☞ Apache Avro [![avro](https://img.shields.io/badge/Apache-Avro-orange)](http://avro.apache.org/docs/current/)&nbsp;
 
-- Avro는 언어 독립적인 직렬화 라이브러리로 핵심 구성 요소 중 하나인 스키마를 사용. 추가 데이터 처리를 위해 스키마를 파일에 저장함
+- Avro는 언어 독립적인 직렬화 라이브러리로 핵심 구성 요소 중 하나인 스키마를 사용. 추가 데이터 처리를 위해 스키마를 JSON 파일에 저장함
 
 ```js
 - 특정 언어에 종속되지 않은 언어 중립적 데이터 직렬화 시스템
@@ -118,6 +119,64 @@
 - 스키마는 JSON으로 작성
 - 데이터는 작고 빠른 바이너리 포맷으로 직렬화
 ```
+
+### ★Run
+
+- Apache Avro를 사용하여 AvroHttRequest Class를 직렬화 및 역직렬화 수행 example code
+
++ maven 의존성 추가
+
+```xml
+<dependency>
+    <groupId>org.apache.avro</groupId>
+    <artifactId>avro-compiler</artifactId>
+    <version>1.8.2</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.avro</groupId>
+    <artifactId>avro-maven-plugin</artifactId>
+    <version>1.8.2</version>
+</dependency>
+```
+
++ 스키마 생성 : SchemaBuilder를 사용
+
+```java
+Schema clientIdentifier = SchemaBuilder.record("ClientIdentifier")
+  .namespace("com.baeldung.avro")
+  .fields().requiredString("hostName").requiredString("ipAddress")
+  .endRecord();
+```
+
++ 프로그램에서 스키마 읽기 : 주어진 스키마에 대한 Avro 클래스를 만드는 것
+	- 프로그래밍 방식으로 Avro 클래스 생성 : SchemaCompiler를 사용하여 클래스를 생성하는 방법
+	- Maven을 사용하여 클래스 생성하는 방법 <- 이 방법으로 Class 생성
+
+```xml
+<plugin>
+    <groupId>org.apache.avro</groupId>
+    <artifactId>avro-maven-plugin</artifactId>
+    <version>${avro.version}</version>
+        <executions>
+            <execution>
+                <id>schemas</id>
+                <phase>generate-sources</phase>
+                <goals>
+                    <goal>schema</goal>
+                    <goal>protocol</goal>
+                    <goal>idl-protocol</goal>
+                </goals>
+                <configuration>
+                    <sourceDirectory>${project.basedir}/src/main/resources/</sourceDirectory>
+                    <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
+                </configuration>
+            </execution>
+        </executions>
+</plugin>
+```
+
++ Avro를 사용 데이터 직렬화
++ 데이터 역 직렬화
 
 ---
 
@@ -160,6 +219,7 @@
 ```js
 - 수집 대상인 server 또는 network 장비들에 설치된 collector 클라이언트가 TSD서버로 전송하면 TSD가 HBase에 저장
 - OpenTSDB는 HTTP API, Web UI, Telnet을 통한 읽기/쓰기를 지원
+- openTSDB는 HBase 기반으로 작동을 하기 때문에 HBase가 이미 설치 되어 있어야 함
 ```
 
 [Data Format]
@@ -169,7 +229,7 @@
 - a Value(int64, float, JSON)
 - A set of tags
 
-[OpenTSDB Architecture]
+[OpenTSDB Architecture] [![Sources](https://img.shields.io/badge/출처-OpenTSDB-yellow)](http://opentsdb.net/overview.html)
 
 ![OpenTSDB](images/opentsdb_architecture.png)
 
@@ -182,7 +242,7 @@
 ### ☞ Apache Druid (incubating project) [![druid](https://img.shields.io/badge/Apache-Druid-blue)](https://druid.apache.org/)&nbsp;
 - A Scalable Timeseries Online Analytical Processing(OLAP) Database System
 
-[Druid Architecture]
+[Druid Architecture] [![Sources](https://img.shields.io/badge/출처-Druid-yellow)](https://druid.apache.org/)
 
 ![druid](images/druid_architecture.png)
 
