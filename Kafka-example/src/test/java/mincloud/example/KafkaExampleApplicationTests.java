@@ -22,7 +22,7 @@ import mincloud.example.producer.Sender;
 
 public class KafkaExampleApplicationTests {
 
-	  static final String KAFKA_TOPIC = "kafka-test-topic";
+	  static final String KAFKA_TOPIC = "kafka-test.t";
 	
 	  @Autowired
 	  private Receiver receiver;
@@ -32,7 +32,14 @@ public class KafkaExampleApplicationTests {
 	
 	  @Test
 	  public void testReceive() throws Exception {
-		    sender.send("###Hello Spring Boot Kafka!!!");
+		  
+		  	int numberOfMessages = Receiver.COUNT;
+		  	
+		  	for (int i = 0; i < numberOfMessages; i++) {
+		  		sender.send("message " + i);
+		    }
+		  	
+		    //sender.send("###Hello Spring Boot Kafka!!!");
 		
 		    receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
 		    assertThat(receiver.getLatch().getCount()).isEqualTo(0);

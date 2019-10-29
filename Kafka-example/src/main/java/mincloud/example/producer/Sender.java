@@ -15,6 +15,6 @@ public class Sender {
 	public void send(String payload) {
 		
 	    LOGGER.info("sending payload='{}'", payload);
-	    kafkaTemplate.send("kafka-test-topic", payload);
+	    kafkaTemplate.send("kafka-test.t", payload);
 	 }
 }

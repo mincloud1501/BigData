@@ -28,36 +28,40 @@ public class ReceiverConfig {
 		  Map<String, Object> props = new HashMap<>();
 		    
 		    // list of host:port pairs used for establishing the initial connections to the Kafka cluster
-		    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-		        bootstrapServers);
-		    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-		        StringDeserializer.class);
-		    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-		        StringDeserializer.class);
+		    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+		    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+		    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		    // allows a pool of processes to divide the work of consuming and processing records
 		    props.put(ConsumerConfig.GROUP_ID_CONFIG, "mincloud");
 		    // automatically reset the offset to the earliest offset
 		    props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+  		    
+		    // maximum records per poll
+		    props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "10");
 		
 		    return props;
   }
 
   @Bean
   public ConsumerFactory<String, String> consumerFactory() {
-	  return new DefaultKafkaConsumerFactory<>(consumerConfigs());
+	  	return new DefaultKafkaConsumerFactory<>(consumerConfigs());
   }
 
   @Bean
   public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
-	  ConcurrentKafkaListenerContainerFactory<String, String> factory =
+	    ConcurrentKafkaListenerContainerFactory<String, String> factory =
 			  new ConcurrentKafkaListenerContainerFactory<>();
-	  factory.setConsumerFactory(consumerFactory());
+	    factory.setConsumerFactory(consumerFactory());
+	  
+	    // enable batch listening
+	    factory.setBatchListener(true);
 
-	  return factory;
+	    return factory;
   }
 
   @Bean
   public Receiver receiver() {
-	  return new Receiver();
+	  	return new Receiver();
   }
+  
 }
