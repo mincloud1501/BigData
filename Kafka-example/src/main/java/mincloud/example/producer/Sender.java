@@ -22,7 +22,7 @@ public class Sender {
 	    //LOGGER.info("sending payload='{}'", payload);
 	    //kafkaTemplate.send("kafka-test.t", payload);
 		
-		LOGGER.info("sending car='{}'", car.toString());
+		LOGGER.info("#####sending car='{}'", car.toString());
 	    kafkaTemplate.send("kafka-test.t", car);
 	 }
 }

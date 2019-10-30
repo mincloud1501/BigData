@@ -100,6 +100,7 @@ public class KafkaSenderTest {
 	
 	    // check that the message was received
 	    ConsumerRecord<String, String> received = records.poll(10, TimeUnit.SECONDS);
+	    
 	    // Hamcrest Matchers to check the value
 	    assertThat(received, hasValue(greeting));
 	    // AssertJ Condition to check the key

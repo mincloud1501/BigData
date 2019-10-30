@@ -25,7 +25,7 @@ public class Receiver {
 		@KafkaListener(topics = "kafka-test.t")
 		
 		public void receive(Car car) {
-		     LOGGER.info("received car='{}'", car.toString());
+		     LOGGER.info("#####received car='{}'", car.toString());
 		     latch.countDown();
 	    }
 		

@@ -123,6 +123,7 @@
 ### ★Run
 
 - Apache Avro를 사용하여 AvroHttRequest Class를 직렬화 및 역직렬화 수행 example code
+- Apache Kafka에는 다수의 built in (de)serializers가 제공되지만 Avro는 포함되어 있지 않음
 
 + maven 의존성 추가
 
