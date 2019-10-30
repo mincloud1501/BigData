@@ -14,6 +14,9 @@ import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
+
+import mincloud.example.model.Car;
 
 @Configuration
 @EnableKafka
@@ -30,31 +33,34 @@ public class ReceiverConfig {
 		    // list of host:port pairs used for establishing the initial connections to the Kafka cluster
 		    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 		    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-		    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+		    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 		    // allows a pool of processes to divide the work of consuming and processing records
-		    props.put(ConsumerConfig.GROUP_ID_CONFIG, "mincloud");
+		    props.put(ConsumerConfig.GROUP_ID_CONFIG, "json");
+		    
 		    // automatically reset the offset to the earliest offset
-		    props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+		    //props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
   		    
 		    // maximum records per poll
-		    props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "10");
+		    //props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "10");
 		
 		    return props;
   }
 
   @Bean
-  public ConsumerFactory<String, String> consumerFactory() {
-	  	return new DefaultKafkaConsumerFactory<>(consumerConfigs());
+  public ConsumerFactory<String, Car> consumerFactory() {
+	  	//return new DefaultKafkaConsumerFactory<>(consumerConfigs());
+	       return new DefaultKafkaConsumerFactory<>(consumerConfigs(), new StringDeserializer(),
+		        new JsonDeserializer<>(Car.class));
   }
 
   @Bean
-  public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
-	    ConcurrentKafkaListenerContainerFactory<String, String> factory =
+  public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Car>> kafkaListenerContainerFactory() {
+	    ConcurrentKafkaListenerContainerFactory<String, Car> factory =
 			  new ConcurrentKafkaListenerContainerFactory<>();
 	    factory.setConsumerFactory(consumerFactory());
 	  
 	    // enable batch listening
-	    factory.setBatchListener(true);
+	    //factory.setBatchListener(true);
 
 	    return factory;
   }

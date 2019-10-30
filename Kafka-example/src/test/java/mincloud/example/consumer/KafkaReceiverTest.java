@@ -74,7 +74,7 @@ public class KafkaReceiverTest {
   @Test
   public void testReceive() throws Exception {
 	    
-	  // send the message
+	    // send the message
 	    String greeting = "Hello Spring Boot Kafka Receiver!";
 	    template.sendDefault(greeting);
 	    

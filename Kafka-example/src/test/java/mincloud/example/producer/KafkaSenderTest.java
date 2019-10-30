@@ -96,7 +96,7 @@ public class KafkaSenderTest {
   public void testSend() throws InterruptedException {
 	    // send the message
 	    String greeting = "Hello Spring Kafka Sender!";
-	    sender.send(greeting);
+	    //sender.send(greeting);
 	
 	    // check that the message was received
 	    ConsumerRecord<String, String> received = records.poll(10, TimeUnit.SECONDS);
