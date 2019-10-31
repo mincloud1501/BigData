@@ -1,4 +1,4 @@
-{"namespace": "example.avro",
+{"namespace": "kafka-example.avro",
   "type": "record",
   "name": "User",
   "fields": [

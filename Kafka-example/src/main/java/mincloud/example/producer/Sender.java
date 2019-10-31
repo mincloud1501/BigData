@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 
-import mincloud.example.model.Car;
+import mincloud.example.avro.User;
 
 public class Sender {
 
@@ -14,15 +14,21 @@ public class Sender {
 	//@Value("${kafka.topic.json}")
 	//private String jsonTopic;
 	
-	@Autowired
-	private KafkaTemplate<String, Car> kafkaTemplate;
+	//@Value("${kafka.topic.avro}")
+	//private String avroTopic;
 	
-	public void send(Car car) {
+	@Autowired
+	private KafkaTemplate<String, User> kafkaTemplate;
+	
+	public void send(User user) {
 		
 	    //LOGGER.info("sending payload='{}'", payload);
 	    //kafkaTemplate.send("kafka-test.t", payload);
 		
-		LOGGER.info("#####sending car='{}'", car.toString());
-	    kafkaTemplate.send("kafka-test.t", car);
+		//LOGGER.info("#####sending car='{}'", car.toString());
+	    //kafkaTemplate.send(jsonTopic, car);
+		
+		LOGGER.info("#####sending car='{}'", user.toString());
+	    kafkaTemplate.send("kafka-test-topic", user);
 	 }
 }

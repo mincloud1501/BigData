@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 
-import mincloud.example.model.Car;
+import mincloud.example.avro.User;
 
 public class Receiver {
 
@@ -22,10 +22,11 @@ public class Receiver {
 
 		//@KafkaListener(topics = "kafka-test.t")
 		//@KafkaListener(id = "batch-listener", topics = "kafka-test.t")
-		@KafkaListener(topics = "kafka-test.t")
+		//@KafkaListener(topics = "${kafka.topic.avro}")
+		@KafkaListener(topics = "kafka-test-topic")
 		
-		public void receive(Car car) {
-		     LOGGER.info("#####received car='{}'", car.toString());
+		public void receive(User user) {
+		     LOGGER.info("#####received user='{}'", user.toString());
 		     latch.countDown();
 	    }
 		

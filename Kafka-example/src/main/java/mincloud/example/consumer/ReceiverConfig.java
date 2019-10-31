@@ -16,7 +16,8 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
-import mincloud.example.model.Car;
+import mincloud.example.avro.User;
+import mincloud.example.serializer.AvroDeserializer;
 
 @Configuration
 @EnableKafka
@@ -33,9 +34,9 @@ public class ReceiverConfig {
 		    // list of host:port pairs used for establishing the initial connections to the Kafka cluster
 		    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 		    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-		    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+		    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, AvroDeserializer.class);
 		    // allows a pool of processes to divide the work of consuming and processing records
-		    props.put(ConsumerConfig.GROUP_ID_CONFIG, "json");
+		    props.put(ConsumerConfig.GROUP_ID_CONFIG, "avro");
 		    
 		    // automatically reset the offset to the earliest offset
 		    //props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
@@ -47,15 +48,15 @@ public class ReceiverConfig {
   }
 
   @Bean
-  public ConsumerFactory<String, Car> consumerFactory() {
+  public ConsumerFactory<String, User> consumerFactory() {
 	  	//return new DefaultKafkaConsumerFactory<>(consumerConfigs());
 	       return new DefaultKafkaConsumerFactory<>(consumerConfigs(), new StringDeserializer(),
-		        new JsonDeserializer<>(Car.class));
+		        new JsonDeserializer<>(User.class));
   }
 
   @Bean
-  public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Car>> kafkaListenerContainerFactory() {
-	    ConcurrentKafkaListenerContainerFactory<String, Car> factory =
+  public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, User>> kafkaListenerContainerFactory() {
+	    ConcurrentKafkaListenerContainerFactory<String, User> factory =
 			  new ConcurrentKafkaListenerContainerFactory<>();
 	    factory.setConsumerFactory(consumerFactory());
 	  

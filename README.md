@@ -40,19 +40,19 @@
 > bin/windows/kafka-server-start.bat config/server.properties
 
 # Topic 생성
-> bin/windows/kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic kafka-test.t
+> bin/windows/kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic kafka-test-topic
 
 # Topic List 확인
 > bin/windows/kafka-topics.bat --list --zookeeper localhost:2181
 
 # Topic 삭제 : /temp/zookeeper & kafka-logs로 관리
-> bin/windows/kafka-topics.bat --delete --zookeeper localhost --topic kafka-test.t
+> bin/windows/kafka-topics.bat --delete --zookeeper localhost --topic kafka-test-topic
 
 # Consumer Run -> Get Message
-> bin/windows/kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic kafka-test.t
+> bin/windows/kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic kafka-test-topic
 
 # Producer Run -> Send Message
-> bin/windows/kafka-console-producer.bat --broker-list localhost:9092 --topic kafka-test.t
+> bin/windows/kafka-console-producer.bat --broker-list localhost:9092 --topic kafka-test-topic
 > test message#1
 > test message#2
 > test message#3

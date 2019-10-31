@@ -4,16 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.concurrent.TimeUnit;
 
-import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import mincloud.example.avro.User;
 import mincloud.example.consumer.Receiver;
-import mincloud.example.model.Car;
 import mincloud.example.producer.Sender;
 
 @RunWith(SpringRunner.class)
@@ -21,7 +19,7 @@ import mincloud.example.producer.Sender;
 
 public class KafkaExampleApplicationTests {
 
-      static final String RECEIVER_TOPIC = "kafka-test.t";
+      static final String RECEIVER_TOPIC = "kafka-test-topic";
 	
 	  @Autowired
 	  private Receiver receiver;
@@ -29,14 +27,17 @@ public class KafkaExampleApplicationTests {
 	  @Autowired
 	  private Sender sender;
 
-	  @ClassRule
-	  public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, RECEIVER_TOPIC);
-
+	  //@ClassRule
+	  //public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, RECEIVER_TOPIC);
+	  
 	  @Test
 	  public void testReceive() throws Exception {
 		    // Use JsonSerializer
-		    Car car = new Car("Passat", "Volkswagen", "ABC-123");
-		    sender.send(car);
+		    //Car car = new Car("Passat", "Volkswagen", "ABC-123");
+		  
+		    // Use AvroSerializer
+		  	User user = User.newBuilder().setName("Keith, Moon").setFavoriteColor("yellow").setFavoriteNumber(null).build();
+		    sender.send(user);
 
 		    receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
 		    assertThat(receiver.getLatch().getCount()).isEqualTo(0);

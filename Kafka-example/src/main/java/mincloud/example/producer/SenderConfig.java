@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
-import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import mincloud.example.model.Car;
+import mincloud.example.avro.User;
+import mincloud.example.serializer.AvroSerializer;
 
 @Configuration
 public class SenderConfig {
@@ -28,18 +28,18 @@ public class SenderConfig {
 		 // list of host:port pairs used for establishing the initial connections to the Kakfa cluster
 		 props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 		 props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
- 	     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+ 	     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, AvroSerializer.class);
 
 	     return props;
 	  }
 
 	  @Bean
-	  public ProducerFactory<String, Car> producerFactory() {
+	  public ProducerFactory<String, User> producerFactory() {
 		  return new DefaultKafkaProducerFactory<>(producerConfigs());
 	  }
 
 	  @Bean
-	  public KafkaTemplate<String, Car> kafkaTemplate() {
+	  public KafkaTemplate<String, User> kafkaTemplate() {
 		  return new KafkaTemplate<>(producerFactory());
 	  }
 
