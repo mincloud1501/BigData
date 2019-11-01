@@ -67,7 +67,7 @@
 ```
 
 #### <설계/고려사항>
-- Kafka는 실제로 대규모 Stream을 처리하도록 설계되어 규모가 없거나 예상하지 못한 경우, 설정하고 유지/관리하는 것은 가치가 없음
+- Kafka는 실제로 대규모 Stream을 처리하도록 설계되어 규모가 없거나 예상하지 못한 경우, 설정하고 유지/관리하는 것은 가치가 없음.
 
 ```js
 - 장애 발생 시 데이터 처리 보장
@@ -120,12 +120,11 @@
 - 데이터는 작고 빠른 바이너리 포맷으로 직렬화
 ```
 
-### ★Run
-
+### ★Run [![Sources](https://img.shields.io/badge/출처-Avro-yellow)](https://avro.apache.org/docs/current/gettingstartedjava.html#Defining+a+schema)
 - Apache Avro를 사용하여 AvroHttRequest Class를 직렬화 및 역직렬화 수행 example code
 - Apache Kafka에는 다수의 built in (de)serializers가 제공되지만 Avro는 포함되어 있지 않음
 
-+ maven 의존성 추가
+[Add dependency]
 
 ```xml
 <dependency>
@@ -140,51 +139,56 @@
 </dependency>
 ```
 
-+ 스키마 생성 : SchemaBuilder를 사용
+[Defining a schema (user.avsc)]
+
+```json
+{
+ "namespace": "mincloud.example.avro",
+ "type": "record",
+ "name": "User",
+ "fields": [
+     {"name": "name", "type": "string"},
+     {"name": "favorite_number",  "type": ["int", "null"]},
+     {"name": "favorite_color", "type": ["string", "null"]}
+ ]
+}
+```
+
+[Compiling the schema]
+
+```
+> java -jar avro-tools-1.9.1.jar compile schema user.avsc .
+```
+
+[Serializing / Deserializing Test]
+
+- Zookeeper 실행 후 embeddedKafka 연동하여 Test
 
 ```java
-Schema clientIdentifier = SchemaBuilder.record("ClientIdentifier")
-  .namespace("com.baeldung.avro")
-  .fields().requiredString("hostName").requiredString("ipAddress")
-  .endRecord();
+@ClassRule
+public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, RECEIVER_TOPIC);
+
+@Before
+public void setUp() throws Exception {
+    for (MessageListenerContainer messageListenerContainer : kafkaListenerEndpointRegistry.getListenerContainers()) {
+    	ContainerTestUtils.waitForAssignment(messageListenerContainer, embeddedKafka.getEmbeddedKafka().getPartitionsPerTopic());
+    }
+}
 ```
-
-+ 프로그램에서 스키마 읽기 : 주어진 스키마에 대한 Avro 클래스를 만드는 것
-	- 프로그래밍 방식으로 Avro 클래스 생성 : SchemaCompiler를 사용하여 클래스를 생성하는 방법
-	- Maven을 사용하여 클래스 생성하는 방법 <- 이 방법으로 Class 생성
-
-```xml
-<plugin>
-    <groupId>org.apache.avro</groupId>
-    <artifactId>avro-maven-plugin</artifactId>
-    <version>${avro.version}</version>
-        <executions>
-            <execution>
-                <id>schemas</id>
-                <phase>generate-sources</phase>
-                <goals>
-                    <goal>schema</goal>
-                    <goal>protocol</goal>
-                    <goal>idl-protocol</goal>
-                </goals>
-                <configuration>
-                    <sourceDirectory>${project.basedir}/src/main/resources/</sourceDirectory>
-                    <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
-                </configuration>
-            </execution>
-        </executions>
-</plugin>
-```
-
-+ Avro를 사용 데이터 직렬화
-+ 데이터 역 직렬화
 
 ---
 
 ## [Data 저장]
 
 - Apache Hadoop HDFS (NameNode + DataNode)
-- Apache HBASE (HDFS 컬럼 기반 DB), Apache Kudu (컬럼 지향 데이터 스토어)
+- Apache Kudu (컬럼 지향 데이터 스토어)
+- Apache HBASE (HDFS 컬럼 기반 DB)
+
+```js
+- 뛰어난 Horizontal Scalability를 가지는 Distributed DB, Column-oriented store model
+- Hadoop 특유의 Sequential read/write를 최대한 활용해서 Random access를 줄임으로 Disk를 효율적으로 사용
+- Disk IO가 병목이 되기보다는 CPU나 RAM 용량이 병목이 되는 경우가 많음
+```
 
 ### ☞ ElasticSearch Cluster
 - 전체 데이터를 저장하고 모든 노드를 포괄하는 통합 색인화 및 NRT(Near Realtime) 검색 기능을 제공
@@ -220,7 +224,7 @@ Schema clientIdentifier = SchemaBuilder.record("ClientIdentifier")
 ```js
 - 수집 대상인 server 또는 network 장비들에 설치된 collector 클라이언트가 TSD서버로 전송하면 TSD가 HBase에 저장
 - OpenTSDB는 HTTP API, Web UI, Telnet을 통한 읽기/쓰기를 지원
-- openTSDB는 HBase 기반으로 작동을 하기 때문에 HBase가 이미 설치 되어 있어야 함
+- openTSDB는 HBase 기반으로 작동을 하기 때문에 HBase가 이미 설치 되어 있어야 됨 (Hadoop 실행 -> hbase 실행 -> openTSDB 실행)
 ```
 
 [Data Format]
@@ -257,6 +261,57 @@ Schema clientIdentifier = SchemaBuilder.record("ClientIdentifier")
 - Lambda-Architecture : 실시간으로 들어오는 데이터(실시간 뷰)와 이전 데이터(배치 뷰)를 합해 쿼리 결과를 보여준다
 - Druid는 모든 데이터를 완전히 색인화 함 (Full Indexing)
 ```
+
+#### ★ Lambda-Architecture
+
+![lambda](images/lambda_architecture.png)
+
+[Batch Layer]
+
+```
+- Batch를 이용하여 데이터를 미리 계산
+- Batch Layer의 저장소에는 Raw Data 보관
+- Batch View의 데이터 부정확할 때 복구 가능
+- 새로운 View를 제공하고자할 때 기존 원본 데이터로 새로운 View의 통계 분석 가능
+- 일반적으로 Apache Hadoop 사용
+```
+
+[Speed Layer]
+
+```
+- Batch Layer 간격 사이의 데이터 Gap을 채우기 위한 실시간 집계
+- 주로 Apache Storm, Apache Spark 사용
+```
+
+[Serving Layer]
+
+```
+- Batch/Speed Layer의 Output을 저장
+- Client에서는 이 Layer에서 미리 계산된 데이터를 조회하기 때문에 빠른 응답이 가능
+```
+
+#### <설계/고려사항>
+```js
+- Business Logic과 External dependency를 분리해야 함
+  ex) Batch Layer에서 데이터를 가져오는 부분과 DB에 Insert하는 부분 분리...
+- Business Logic 및 외부 Service API 조회 부분에 Test Code 작성
+- 장애에 대한 영향도 전파가 없도록 구성
+- Shards, Replica 전략
+```
+
+#### ★ Kappa-Architecture
+
+![kappa](images/kappa_architecture.png)
+
+```
+- Lambda 아키텍처의 단점인 다른 프레임워크를 사용하는 실행 부하 과다 경로와 실행 부하 미달 경로의 두 위치에서의 중복된 계산 논리와 두 경로의 아키텍처 관리에 따른 복잡성 문제를 해결
+- Lambda 아키텍처와 동일한 기본 목표가 있지만 중요한 차이점은 스트림 처리 시스템을 사용하여 단일 경로를 통한 모든 데이터 흐름을 처리
+- Event Data 변경 불가능하며, 일부가 아닌 전체가 수집되어 람다 아키텍처의 일괄 처리 계층과 약간 유사
+- Lambda 아키텍처의 Speed Layer와 비슷하게, 모든 이벤트 처리가 입력 스트림에서 수행되고 real-time view로 유지
+- 전체 데이터 집합을 다시 계산해야 하는 경우(Batch Layer가 수행하는 것과 동일), Stream을 재생하기만 하면 병렬화를 통해 적절하게 계산 완료
+```
+
+---
 
 ### ☞ Amazon S3, Azure ADLS & WASB, Google Cloud GCS
 - Cloud Connector를 사용하여 Cloud Storage에 저장된 데이터에 액세스하고 작업 가능
