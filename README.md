@@ -1,4 +1,4 @@
-# BigData miniProject
+# BigData Study Project
 
 **BigData Pipeline**
 
@@ -180,9 +180,28 @@ public void setUp() throws Exception {
 
 ## [Data 저장]
 
-- Apache Hadoop HDFS (NameNode + DataNode)
-- Apache Kudu (컬럼 지향 데이터 스토어)
-- Apache HBASE (HDFS 컬럼 기반 DB)
+#### Apache Hadoop HDFS(Hadoop Distributed File System)
+
+[구성요소]
+
+```js
+- 여러 데이터 서버에 데이터를 저장하는 Hadoop의 스토리지 계층으로 Namenode와 Datanode로 구성
+- NameNode : Namenode는 마스터 서버, Namenode는 다양한 데이터 노드,위치,각 블록의 크기 등에 대한 Metadata 정보를 저장
+- DataNode : Block report를 10초마다 Namenode에 전송하는 multi-instance server. N개의 Datanode server가 있을 수 있으며, Namenode에 의해 요청될 때 블록을 저장하고 검색하며, 클라이언트의 요청을 read/write하며 Namenode의 지시에 따라 블록 생성/삭제 및 복제를 수행
+```
+
+[HDFS Architecture]
+
+![hdfs_architecture](images/hdfs_architecture.jpg)
+
+[동작 원리]
+
+```js
+- HDFS는 데이터를 수집할 때 정보를 개별 블록으로 나누어 클러스터의 다른 노드에 분산시켜 작업을 병렬로 수행하여 보다 효율적으로 작업할 수 있도록 함
+- 무장애 기능이 뛰어나도록 특별히 설계되어, 파일 시스템은 각 데이터 조각을 여러번 복제하거나 복사하고(복제 팩터라고 함) 개별 노드에 배포하여 다른 노드와 다른 서버 랙에 하나 이상의 복사본을 배치
+```
+
+#### Apache HBASE (HDFS 컬럼 기반 DB)
 
 ```js
 - 뛰어난 Horizontal Scalability를 가지는 Distributed DB, Column-oriented store model
@@ -338,10 +357,23 @@ public void setUp() throws Exception {
 
 ## [Data 처리]
 
-#### Hadoop MapReduce (분산데이터 병렬배치 처리)
+#### ☞ Hadoop MapReduce (분산데이터 병렬배치 처리)
+
+[MapReduce Architecture]
+
+![mapreduce](images/mapreduce.jpg)
 
 ```js
-- Hadoop은 데이터 일괄처리를 최우선으로 하며, 페타바이트급의 데이터를 저렴한 비용으로 저장/처리할 수 있으나, 실시간 데이터 처리에 부족
+- MapReduce는 Hadoop클러스터에서 대규모 데이터 세트를 병렬로 처리하기 위한 프레임워크로 데이터 분석에는 Map Process와 Reduce Process 단계가 사용됨
+- MapReduce에서는 반복적 애플리케이션과 대화형 애플리케이션 모두 병렬 작업 간에 더 빠른 데이터 공유가 요구되는데 복제/직렬화/디스크 I/O 등으로 인해 상당한 Overhead가 발생하여 데이터 공유 속도가 느림
+```
+
+[작동원리]
+
+```js
+- MapReduce에서의 작업의 최상위 단위는 Work. work에는 일반적으로 map과 reduce 단계가 있지만 reduce 단계는 생략 가능
+- Map 단계에서 입력 데이터는 입력 분할로 나뉘어 Hadoop클러스터에서 병렬로 실행되는 맵 작업별로 분석
+- Reduce 단계에서는 병렬로 입력되는 맵 작업의 결과를 사용, reduce task는 데이터를 최종 결과로 통합
 ```
 
 **[Data Warehouse]**
@@ -351,20 +383,34 @@ public void setUp() throws Exception {
 
 ### ☞ Apache Spark™ [![spark](https://img.shields.io/badge/Apache-Spark-yellow)](https://spark.apache.org/)&nbsp;
 - 대규모 데이터 처리 및 라이브러리 세트 (Spark SQL/MLlib/GraphX)를 위한 통합 분석 엔진
+- 보다 빠르고 효율적인 MapReduce를 수행하기 위해 기본 데이터 구조로 RDD(Resilient Disributed Data)를 사용 : Immutable (Read-Only)
+- Spark = RDD (Resilient Disributed Data) + Interface
+- Spark는 Hadoop을 저장과 처리 두 가지 방법으로 사용하는데 자체 클러스터 관리 연산을 갖고 있기 때문에 Hadoop은 저장 용도로만 사용
 
-[Apache Spark]
-
-![apache_spark](images/apache_spark.png)
-
-[Apache Spark Architecture]
-
-![apache_spark](images/spark_architecture.png)
+[Apache Spark Stack] [![Sources](https://img.shields.io/badge/출처-Spark-yellow)](https://www.tutorialspoint.com/apache_spark/apache_spark_introduction.html)
 
 ```js
-- In-Memory 방식 오픈 소스 클러스터 컴퓨팅 프레임워크, 실시간 데이터 처리에 적합
+- In-Memory 기반 오픈 소스 클러스터 컴퓨팅 프레임워크, 실시간 데이터 처리에 적합
 - 메모리를 활용한 아주 빠른 데이터 처리, Scala를 사용하여 코드가 매우 간단, interactive shell을 사용
 - Spark는 실시간 처리를 위한 독립적인 처리엔진으로 Hadoop과 같은 모든 분산 파일 시스템에 설치 가능
 - Spark는 스트리밍 데이터로의 전환을 편리하게 할 수 있다는 장점
+```
+
+![spark_stack](images/spark.png)
+
+```js
+- Infra Layer : spark가 독립적으로 기동할 수 있는 Standalone Scheudler가 존재(spark만 OS위에 설치하여 사용), Hadoop platform인 YARN (Yet Another Resource Negotiator) 위에서 기동되거나 Docker 가상화 플랫폼인 Mesos 위에서 기동 가능
+- Spark Core : Memory 기반의 분산 클러스터 컴퓨팅 환경인 Standalone Scheudler 위 에 올라감
+- Spark Library : 특정한 기능에 목적이 맞추어진 각각의 라이브러리가 동작되는데 빅데이타를 SQL로 핸들링할 수 있게 해주는 Spark SQL, 실시간으로 들어오는 데이타에 대한 real-time streaming 처리를 해주는 Spark Streaming, machine-learning을 위한 MLib, graph data processing이 가능한 GraphX가 있음
+```
+
+[Spark RDD]
+
+![spark_rdd](images/spark_rdd.jpg)
+
+```js
+- 중간 결과를 안정적 저장장치(디스크) 대신 분산 메모리에 저장해 시스템 속도를 높힘
+- 분산 메모리(RAM)가 중간 결과(JOB의 상태)를 저장하기에 충분하지 않으면 디스크에 그 결과를 저장
 ```
 
 #### <설계/고려사항>
