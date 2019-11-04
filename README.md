@@ -180,7 +180,7 @@ public void setUp() throws Exception {
 
 ## [Data 저장]
 
-#### Apache Hadoop HDFS(Hadoop Distributed File System)
+#### Apache Hadoop HDFS(Hadoop Distributed File System) [![Sources](https://img.shields.io/badge/출처-Hadoop-yellow)](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html)
 
 [구성요소]
 
@@ -384,7 +384,7 @@ public void setUp() throws Exception {
 ### ☞ Apache Spark™ [![spark](https://img.shields.io/badge/Apache-Spark-yellow)](https://spark.apache.org/)&nbsp;
 - 대규모 데이터 처리 및 라이브러리 세트 (Spark SQL/MLlib/GraphX)를 위한 통합 분석 엔진
 - 보다 빠르고 효율적인 MapReduce를 수행하기 위해 기본 데이터 구조로 RDD(Resilient Disributed Data)를 사용 : Immutable (Read-Only)
-- Spark = RDD (Resilient Disributed Data) + Interface
+- Spark = RDD (Resilient Disributed Data) + Scala Interface
 - Spark는 Hadoop을 저장과 처리 두 가지 방법으로 사용하는데 자체 클러스터 관리 연산을 갖고 있기 때문에 Hadoop은 저장 용도로만 사용
 
 [Apache Spark Stack] [![Sources](https://img.shields.io/badge/출처-Spark-yellow)](https://www.tutorialspoint.com/apache_spark/apache_spark_introduction.html)
@@ -413,6 +413,33 @@ public void setUp() throws Exception {
 - 분산 메모리(RAM)가 중간 결과(JOB의 상태)를 저장하기에 충분하지 않으면 디스크에 그 결과를 저장
 ```
 
+### Spark Streaming [![Sources](https://img.shields.io/badge/출처-SparkStreaming-yellow)](https://spark.apache.org/docs/latest/streaming-programming-guide.html)
+
+![spark_streaming](images/spark_streaming.png)
+
+- 실시간 데이터 스트림의 확장 가능하고 높은 처리량, 오류 허용 스트림 처리를 가능하게 하는 핵심 스파크 API의 확장
+- 데이터는 Kafka, Flume, Kinesis 또는 TCP소켓과 같은 많은 소스로부터 수집
+- 실시간 입력 데이터 스트림을 수신하고 데이터를 배치로 나눈 다음 스파크 엔진에 의해 처리되어 최종 결과 스트림을 일괄적으로 생성
+
+![streaming_flow](images/streaming_flow.png)
+
+- 연속적인 데이터 스트림을 나타내는 불연속 스트림 또는 DStream이라고 하는 높은 수준의 추상화를 제공
+- DStreams은 Kafka, Flume, Kinesis와 같은 소스로부터의 입력 데이터 스트림에서 또는 다른 DStreams에 높은 수준의 연산을 적용하여 생성 가능
+- Spark RDD와 사용 방법이 거의 유사하여 Lambda Architecture 구성에 좋음
+
+### Apache Flink [![Sources](https://img.shields.io/badge/출처-Flink-yellow)](https://flink.apache.org/)
+- 분산, 고성능, 항상 사용 가능한 정확한 데이터 스트리밍 애플리케이션을 위한 스트림 처리 프레임워크
+- Streaming model이 batch가 아닌 native 방식으로 스트림 처리에 대해 low latency 특성을 가짐
+- 아직 Immature Level...
+
+![apache_flink](images/apache_flink.png)
+
+### Apache Ignite [![Sources](https://img.shields.io/badge/출처-Ignite-yellow)](https://ignite.apache.org/)
+- 노드 클러스터 전반에 걸쳐 대량의 데이터를 저장하고 계산하도록 설계된 오픈 소스 분산 데이터베이스, 캐싱 및 처리 플랫폼
+
+![apache_ignite](images/ignite_architecture.png)
+
+
 #### <설계/고려사항>
 
 ```js
@@ -423,8 +450,11 @@ public void setUp() throws Exception {
 
 ## [Data 분석]
 
+### [Query]
+
 #### Apache Impala [![impala](https://img.shields.io/badge/Apache-Impala-yellowgreen)](https://impala.apache.org)&nbsp;
-- Apache Impala는 Apache Hadoop을 실행하는 컴퓨터 클러스터에 저장된 데이터를위한 오픈 소스 MPP (대규모 병렬 처리) SQL 쿼리 엔진 
+- Apache Impala는 Apache Hadoop을 실행하는 컴퓨터 클러스터에 저장된 데이터를위한 오픈 소스 MPP (대규모 병렬 처리) SQL 쿼리 엔진
+- MapReduce 기반의 Hive의 느린 응답성을 개선, 현재는 거의 사용하지 않음
 
 #### Presto [![presto](https://img.shields.io/badge/Apache-Presto-yellowgreen)](http://prestodb.github.io)&nbsp;
 - Presto는 기가 바이트에서 페타 바이트에 이르는 모든 크기의 데이터 소스에 대해 대화 형 분석 쿼리를 실행하기위한 오픈 소스 분산 SQL 쿼리 엔진
@@ -467,6 +497,20 @@ public void setUp() throws Exception {
 - Scala에서 Druid Query를 쉽게 작성할 수있는 Open Source Library
 - Library는 Query를 JSON으로 변환하고 사용자가 정의한 Case Class의 결과를 구문 분석
 ```
+
+### [Tools]
+
+#### ☞ R
+- R은 통계 계산과 그래픽을 위한 프로그래밍 언어이자 소프트웨어 환경
+- R은 통계 소프트웨어 개발과 자료 분석에 널리 사용, 패키지 개발이 용이하여 통계학자들 사이에서 통계 소프트웨어 개발에 많이 쓰임
+- 방대한 양의 패키지와 즉시 사용 가능한 테스트 SET을 제공
+- R을 활용해서 데이터 마이닝(Data Mining)이 가능
+- R은 Google 'Visualization Chart API'로 google과 통신하여 데이터 고급 분석이 가능하고, 그 외에 Spotfire, Qlik View 등의 상업용 데이터 시각화 프로그램과 연동이 가능
+
+### ☞ Python
+- 파이썬(Python)은 C 언어를 기반으로 한 오픈소스 고급 프로그래밍 언어로 데이터 분석에 사용되던 기존 C/C++ library를 흡수
+- 파이썬은 바로 사용할 수 있는 라이브러리(Library)와 통합 개발 환경(IDE, Integrated Development Environment)이 배포판과 함께 제공
+- 대표적인 라이브러리로는 Numpy와 Pandas가 있다. Numpy는 대형, 다차원 배열 및 행렬 등 이러한 배열에서 작동할 수 있는 높은 수준의 수학 함수 모음을 제공하며, Pandas는 관계형 또는 레이블이 있는 데이터 작업을 쉽고 직관적으로 처리할 수 있도록 설계된 라이브러리이다.
 
 ---
 
