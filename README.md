@@ -79,7 +79,7 @@
 
 ## [Data 직렬화]
 
-#### Apache Parquet [![parquet](https://img.shields.io/badge/Apache-Parquet-orange)](https://parquet.apache.org/)&nbsp;
+#### ■ Apache Parquet [![parquet](https://img.shields.io/badge/Apache-Parquet-orange)](https://parquet.apache.org/)&nbsp;
 
 - Apache Parquet는 데이터 처리 프레임 워크, 데이터 모델 또는 프로그래밍 언어의 선택에 관계없이 Hadoop 에코 시스템의 모든 프로젝트에서 사용할 수 있는 컬럼 스토리지 형식
 
@@ -90,7 +90,7 @@
 - 자바 구현체는 단일 표현에 얽매이지 않기 때문에 Parquet 파일에서 데이터를 읽고 쓰는데 Avro, Thrift, Protocol Buffer의 In-memory 데이터 모델을 사용할 수 있음
 ```
 
-#### Apache Thrift [![thrift](https://img.shields.io/badge/Apache-Thrift-orange)](https://thrift.apache.org/)&nbsp;
+#### ■ Apache Thrift [![thrift](https://img.shields.io/badge/Apache-Thrift-orange)](https://thrift.apache.org/)&nbsp;
 
 - 확장 가능한 언어 간 서비스 개발을 위한 Apache Thrift 소프트웨어 프레임 워크는 소프트웨어 스택과 코드 생성 엔진을 결합 (C ++, Java, Python, PHP, Ruby, Erlang, Perl, Haskell, C #, Cocoa, JavaScript, Node.js, Smalltalk, OCaml 및 Delphi 및 기타 언어)
 
@@ -180,7 +180,7 @@ public void setUp() throws Exception {
 
 ## [Data 저장]
 
-#### Apache Hadoop HDFS(Hadoop Distributed File System) [![Sources](https://img.shields.io/badge/출처-Hadoop-yellow)](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html)
+#### ■ Apache Hadoop HDFS(Hadoop Distributed File System) [![Sources](https://img.shields.io/badge/출처-Hadoop-yellow)](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html)
 
 [구성요소]
 
@@ -201,7 +201,7 @@ public void setUp() throws Exception {
 - 무장애 기능이 뛰어나도록 특별히 설계되어, 파일 시스템은 각 데이터 조각을 여러번 복제하거나 복사하고(복제 팩터라고 함) 개별 노드에 배포하여 다른 노드와 다른 서버 랙에 하나 이상의 복사본을 배치
 ```
 
-#### Apache HBASE (HDFS 컬럼 기반 DB)
+#### ■ Apache HBASE (HDFS 컬럼 기반 DB)
 
 ```js
 - 뛰어난 Horizontal Scalability를 가지는 Distributed DB, Column-oriented store model
@@ -228,7 +228,7 @@ public void setUp() throws Exception {
 
 ### ☞ Time Series Database (TSD)
 
-#### InfluxDB [![influxdb](https://img.shields.io/badge/TSD-InfluxDB-brightgreen)](https://www.influxdata.com/)&nbsp;
+#### ■ InfluxDB [![influxdb](https://img.shields.io/badge/TSD-InfluxDB-brightgreen)](https://www.influxdata.com/)&nbsp;
 
 ```js
 - 2013 년 InfluxData에 의해 구축, 대부분 Grafana와 함께 사용
@@ -332,7 +332,7 @@ public void setUp() throws Exception {
 
 ---
 
-### ☞ Amazon S3, Azure ADLS & WASB, Google Cloud GCS
+### ■ Amazon S3, Azure ADLS & WASB, Google Cloud GCS
 - Cloud Connector를 사용하여 Cloud Storage에 저장된 데이터에 액세스하고 작업 가능
 
 [Cloud Storage Architecture]
@@ -413,7 +413,7 @@ public void setUp() throws Exception {
 - 분산 메모리(RAM)가 중간 결과(JOB의 상태)를 저장하기에 충분하지 않으면 디스크에 그 결과를 저장
 ```
 
-### Spark Streaming [![Sources](https://img.shields.io/badge/출처-SparkStreaming-yellow)](https://spark.apache.org/docs/latest/streaming-programming-guide.html)
+### ■ Spark Streaming [![Sources](https://img.shields.io/badge/출처-SparkStreaming-yellow)](https://spark.apache.org/docs/latest/streaming-programming-guide.html)
 
 ![spark_streaming](images/spark_streaming.png)
 
@@ -427,14 +427,14 @@ public void setUp() throws Exception {
 - DStreams은 Kafka, Flume, Kinesis와 같은 소스로부터의 입력 데이터 스트림에서 또는 다른 DStreams에 높은 수준의 연산을 적용하여 생성 가능
 - Spark RDD와 사용 방법이 거의 유사하여 Lambda Architecture 구성에 좋음
 
-### Apache Flink [![Sources](https://img.shields.io/badge/출처-Flink-yellow)](https://flink.apache.org/)
+### ■ Apache Flink [![Sources](https://img.shields.io/badge/출처-Flink-yellow)](https://flink.apache.org/)
 - 분산, 고성능, 항상 사용 가능한 정확한 데이터 스트리밍 애플리케이션을 위한 스트림 처리 프레임워크
 - Streaming model이 batch가 아닌 native 방식으로 스트림 처리에 대해 low latency 특성을 가짐
 - 아직 Immature Level...
 
 ![apache_flink](images/apache_flink.png)
 
-### Apache Ignite [![Sources](https://img.shields.io/badge/출처-Ignite-yellow)](https://ignite.apache.org/)
+### ■ Apache Ignite [![Sources](https://img.shields.io/badge/출처-Ignite-yellow)](https://ignite.apache.org/)
 - 노드 클러스터 전반에 걸쳐 대량의 데이터를 저장하고 계산하도록 설계된 오픈 소스 분산 데이터베이스, 캐싱 및 처리 플랫폼
 
 ![apache_ignite](images/ignite_architecture.png)
@@ -452,11 +452,11 @@ public void setUp() throws Exception {
 
 ### [Query]
 
-#### Apache Impala [![impala](https://img.shields.io/badge/Apache-Impala-yellowgreen)](https://impala.apache.org)&nbsp;
+#### ■ Apache Impala [![impala](https://img.shields.io/badge/Apache-Impala-yellowgreen)](https://impala.apache.org)&nbsp;
 - Apache Impala는 Apache Hadoop을 실행하는 컴퓨터 클러스터에 저장된 데이터를위한 오픈 소스 MPP (대규모 병렬 처리) SQL 쿼리 엔진
 - MapReduce 기반의 Hive의 느린 응답성을 개선, 현재는 거의 사용하지 않음
 
-#### Presto [![presto](https://img.shields.io/badge/Apache-Presto-yellowgreen)](http://prestodb.github.io)&nbsp;
+#### ■ Presto [![presto](https://img.shields.io/badge/Apache-Presto-yellowgreen)](http://prestodb.github.io)&nbsp;
 - Presto는 기가 바이트에서 페타 바이트에 이르는 모든 크기의 데이터 소스에 대해 대화 형 분석 쿼리를 실행하기위한 오픈 소스 분산 SQL 쿼리 엔진
 
 ### ☞ Apache Lucene [![lucene](https://img.shields.io/badge/Apache-Lucene-yellowgreen)](https://lucene.apache.org)&nbsp;
@@ -484,14 +484,14 @@ public void setUp() throws Exception {
 - 자체 Master Node에서 관리, 강력한 API (RESTful 검색 및 분석 엔진)
 ```
 
-**Apache Solr(솔라)**
+**■ Apache Solr(솔라)**
 
 ```js
 - Lucene기반, 사이즈가 큰 데이터 검색에 용이에 문서 검색에 적합하나 색인주기가 느림 (주로 문서검색 용)
 - Apache ZooKeeper로 관리
 ```
 
-**Scruid (Scala+Druid)**
+**■ Scruid (Scala+Druid)**
 
 ```js
 - Scala에서 Druid Query를 쉽게 작성할 수있는 Open Source Library
@@ -516,7 +516,7 @@ public void setUp() throws Exception {
 
 ## [Data 시각화]
 
-#### Apache Zeppelin [![zepplin](https://img.shields.io/badge/Apache-Zeppelin-ff69b4)](https://zeppelin.apache.org)&nbsp;
+#### ■ Apache Zeppelin [![zepplin](https://img.shields.io/badge/Apache-Zeppelin-ff69b4)](https://zeppelin.apache.org)&nbsp;
 
 ```js
 - 국내에서 주도하고 있는 오픈소스 프로젝트로써, Spark를 훨씬 더 편하고 강력하게 사용할 수 있게 해주는 도구
@@ -559,13 +559,13 @@ public void setUp() throws Exception {
 
 ## [Data 관리]
 
-#### Apache Oozie [![oozie](https://img.shields.io/badge/Apache-Oozie-blueviolet)](https://oozie.apache.org)&nbsp;
+#### ■ Apache Oozie [![oozie](https://img.shields.io/badge/Apache-Oozie-blueviolet)](https://oozie.apache.org)&nbsp;
 - Hadoop의 Job을 관리하기 위한 서버 기반의 Workflow Scheduler System
 
-#### Azkaban [![azkaban](https://img.shields.io/badge/LinkedIn-Azkaban-blueviolet)](https://azkaban.github.io)&nbsp;
+#### ■ Azkaban [![azkaban](https://img.shields.io/badge/LinkedIn-Azkaban-blueviolet)](https://azkaban.github.io)&nbsp;
 - Azkaban은 Hadoop job을 실행하기 위해 LinkedIn에서 만든 Batch Workflow Job Scheduler
 
-#### Apache Ambari [![ambari](https://img.shields.io/badge/Apache-Ambari-blueviolet)](https://ambari.apache.org)&nbsp;
+#### ■ Apache Ambari [![ambari](https://img.shields.io/badge/Apache-Ambari-blueviolet)](https://ambari.apache.org)&nbsp;
 - 시스템 관리자가 Hadoop 클러스터를 프로비저닝, 관리 및 모니터링하고 Hadoop을 기존 엔터프라이즈 인프라와 통합 할 수 있게 해 줌
 
 [Ambari Screenshot]
@@ -593,7 +593,7 @@ public void setUp() throws Exception {
 - DAG(Directed Acyclic Graph, 비순환 방향 그래프)로 각 배치 스케쥴 관리
 ```
 
-#### Apache NiFi [![nifi](https://img.shields.io/badge/Apache-NiFi-blueviolet)](https://nifi.apache.org)&nbsp;
+#### ■ Apache NiFi [![nifi](https://img.shields.io/badge/Apache-NiFi-blueviolet)](https://nifi.apache.org)&nbsp;
 - Process와 Process간 Data Flow Monitoring Tool
 
 ``` 
@@ -604,14 +604,30 @@ public void setUp() throws Exception {
 
 ## [Data 통합 서비스/솔루션]
 
-### ☞ Amazon Elasticsearch Service [![aws](https://img.shields.io/badge/AWS-Elasticsearch-lightgrey)](https://aws.amazon.com/ko/elasticsearch-service)&nbsp;
+### ■ Amazon Elasticsearch Service [![aws](https://img.shields.io/badge/AWS-Elasticsearch-lightgrey)](https://aws.amazon.com/ko/elasticsearch-service)&nbsp;
 
 ```
 - 손쉽게 Elasticsearch를 배포, 보호, 운영 및 확장이 가능한 가동 중단이 없는 완전 관리형 서비스
 - 사용하는 만큼만 비용을 지불하며 사전 비용이나 사용 요건이 없음
 ```
 
-### ☞ Splunk [![splunk](https://img.shields.io/badge/Solution-Splunk-lightgrey)](https://www.splunk.com/ko_kr)&nbsp;
+[Amazon Elasticsearch Service Architecture] [![Sources](https://img.shields.io/badge/출처-Amazon-yellow)](https://aws.amazon.com/ko/blogs/aws/category/amazon-elasticsearch-service/)
+
+![AES_architecture](images/aes_architecture.png)
+
+### ■ Cloudera [![cloudera](https://img.shields.io/badge/Solution-Cloudera-lightgrey)](https://kr.cloudera.com/)&nbsp;
+
+```
+- Hadoop 기반 빅데이터 벤처기업의 대표적인 선두주자로 야후, 오라클 출신 등의 사람들에 의해 2008년 설립
+- CDH(Cloudera Distribution Including Apache Hadoop)라는 하둡 배포판이 아파치 하둡 배포판보다 훨씬 더 많이 사용됨
+- Hadoop System을 이용하려면 데이터 수집/저장/가공/분석/관리 tool들을 전부 일일히 설치 해야하는데, CDH는 이런 것들을 자동으로 설치해주고 GUI Interface로 관리 가능
+```
+
+[Cloudera Architecture] [![Sources](https://img.shields.io/badge/출처-Cloudera-yellow)](https://www.cloudera.com/documentation/enterprise/5-6-x/topics/cdh_intro.html)
+
+![cloudera_architecture](images/cloudera_architecture.png)
+
+### ■ Splunk [![splunk](https://img.shields.io/badge/Solution-Splunk-lightgrey)](https://www.splunk.com/ko_kr)&nbsp;
 - 로그 데이터, 실시간 이벤트 데이터 및 다양한 장비 데이터를 수집하고 모니터링하며 검색, 분류, 분석할 수 있는 엔진을 제공하는 통합 솔루션
 
 [Splunk Architecture]
