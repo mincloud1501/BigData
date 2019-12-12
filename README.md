@@ -629,7 +629,29 @@ public void setUp() throws Exception {
 
 ### ■ Splunk [![splunk](https://img.shields.io/badge/Solution-Splunk-lightgrey)](https://www.splunk.com/ko_kr)&nbsp;
 - 로그 데이터, 실시간 이벤트 데이터 및 다양한 장비 데이터를 수집하고 모니터링하며 검색, 분류, 분석할 수 있는 엔진을 제공하는 통합 솔루션
+- Splunk Enterprise 8.0을 발표하면서 E2E Pipeline 구축을 위한 여러 솔루션들을 발표하였다. [Splunk Forum Korea 2019, 2019/12/11]
+- 왠지 스플렁크의 파이프라인 구축을 위한 사업 확장이 더 빠르게 느껴진다. 커스터마이징만 잘 된다면 더 없이 좋은 솔루션이 될 듯...
 
 [Splunk Architecture]
 
 ![splunk_architecture](images/splunk_architecture.png)
+
+#### Splunk Core
+
+- DFS (Data Fabric Search) : 여러 다른 data store들을 연계하여 대용량 데이터 분석 가능
+- DSP (Data Stream Processor) : real-time streaming을 millisecond 안에 수집, 처리, splunk와 다른 목적지로의 배포 가능
+- Investigate : 쿼리, 데이터 세트 및 대시보드에 대한 팀 지식을 파악하여 신속하게 문제 해결 가능
+
+#### IT Operations
+
+- ITSI (IT Service Intelligence) : 모니터링 및 분석 솔루션을 사용하여 운영을 간소화하고, 문제 해결의 우선 순위를 지정하고, IT를 비즈니스에 맞게 조정
+- SignalFx : 클라우드 네이티브 전환의 모든 단계에 맞게 설계하여 클라우드 인프라 및 마이크로서비스의 모든 이점을 신속하게 실현 가능
+- VictorOps : 자동화되고 통찰력 있는 사고 대응 라우팅, 협업 및 리뷰를 통해 온콜 팀이 문제를 더 빠르게 발견하고 해결할 수 있도록 지원
+
+#### Business Flow
+
+- 빠르고 유연하며 직관적인 프로세스 마이닝을 통해 비즈니스 운영을 지속적으로 개선
+
+#### Security
+
+- Phantom : Phantom 보안 자동화를 통해 보안 작업 강화, 반복 작업을 자동화
