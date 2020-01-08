@@ -630,6 +630,7 @@ public void setUp() throws Exception {
 ### ■ Splunk [![splunk](https://img.shields.io/badge/Solution-Splunk-lightgrey)](https://www.splunk.com/ko_kr)&nbsp;
 - 로그 데이터, 실시간 이벤트 데이터 및 다양한 장비 데이터를 수집하고 모니터링하며 검색, 분류, 분석할 수 있는 엔진을 제공하는 통합 솔루션
 - Splunk Enterprise 8.0을 발표하면서 E2E Pipeline 구축을 위한 여러 솔루션들을 발표하였다. [Splunk Forum Korea 2019, 2019/12/11]
+[Forum Data](DIRECTORY.md).
 - 왠지 스플렁크의 파이프라인 구축을 위한 사업 확장이 더 빠르게 느껴진다. 커스터마이징만 잘 된다면 더 없이 좋은 솔루션이 될 듯...
 
 [Splunk Architecture]
